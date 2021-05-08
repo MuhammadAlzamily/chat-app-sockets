@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App Or Wuteva</title>
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+          <h3>My Amazing Chat App</h3>
+          <p>Cece if you read this, you're a fucking bitch uwu</p>
+      </header>
+      <form id="my-chat">
+        <input type="text" id="username" placeholder="Username" />
+        <br />
+        <input type="text" id="user-message" placeholder="Message" />
+        <br />
+        <button type="submit" class="btn light-blue darken-1">SEND</button>
+      </form>
+      <div id="chat-feed">
+        <
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"
+      ></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+        var socket = io();
+
+        const username = document.getElementById("username");
+        const message = document.getElementById("user-message");
+        const chat = document.getElementById("my-chat");
+
+        chat.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          if (username.value && message.value) {
+            socket.emit("chat", {
+              user: username.value,
+              msg: message.value,
+            });
+
+            username.value = "";
+            message.value = "";
+          } else {
+            alert(
+              "Please fill both the username and message fields before sending your message♥"
+            );
+          }
+        });
+        socket.on("chat", (msg) => {
+            const newmessage = document.createElement('div');
+            newmessage.classList.add("blue");
+            newmessage.classList.add("lighten-2");
+            newmessage.classList.add("white-text");
+            newmessage.classList.add("flow-text");
+            newmessage.classList.add("z-depth-5");
+            newmessage.classList.add("center-align");
+            newmessage.innerHTML = `<h4>${msg.user}</h4><p>${msg.msg}</p>`
+          document.getElementById("chat-feed").appendChild(newmessage);
+        });
+      </script>
+    </div>
+  </body>
+</html>
